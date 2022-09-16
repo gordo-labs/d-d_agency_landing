@@ -1,193 +1,168 @@
-import * as React from "react"
-import type { HeadFC } from "gatsby"
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Body from "../components/Body";
+import { createContext, useState, useEffect } from "react";
+import HomepageMenu from "../components/HomepageMenu";
+import cx from "classNames";
+import * as styles from "./index.module.scss";
+import p5Types from "p5";
+import Loadable from "@loadable/component";
+import React from "react";
 
-const pageStyles = {
-  color: "#232129",
-  padding: 96,
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-}
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-}
-const headingAccentStyles = {
-  color: "#663399",
-}
-const paragraphStyles = {
-  marginBottom: 48,
-}
-const codeStyles = {
-  color: "#8A6534",
-  padding: 4,
-  backgroundColor: "#FFF4DB",
-  fontSize: "1.25rem",
-  borderRadius: 4,
-}
-const listStyles = {
-  marginBottom: 96,
-  paddingLeft: 0,
-}
-const doclistStyles = {
-  paddingLeft: 0,
-}
-const listItemStyles = {
-  fontWeight: 300,
-  fontSize: 24,
-  maxWidth: 560,
-  marginBottom: 30,
-}
+import Img from "gatsby-image";
+import { SEO } from "../components/seo";
 
-const linkStyle = {
-  color: "#8954A8",
-  fontWeight: "bold",
-  fontSize: 16,
-  verticalAlign: "5%",
-}
+export const MenuContext = createContext(null);
 
-const docLinkStyle = {
-  ...linkStyle,
-  listStyleType: "none",
-  display: `inline-block`,
-  marginBottom: 24,
-  marginRight: 12,
-}
+export default function Index() {
+  const [isOpen, setOpen] = useState(false);
+  const [sketch, setSketch] = useState<any>();
 
-const descriptionStyle = {
-  color: "#232129",
-  fontSize: 14,
-  marginTop: 10,
-  marginBottom: 0,
-  lineHeight: 1.25,
-}
+  let x = 5;
+  let y = 5;
+  let slotSize = 15;
+  let marginX: number;
+  let marginY: number;
 
-const docLinks = [
-  {
-    text: "TypeScript Documentation",
-    url: "https://www.gatsbyjs.com/docs/how-to/custom-configuration/typescript/",
-    color: "#8954A8",
-  },
-  {
-    text: "GraphQL Typegen Documentation",
-    url: "https://www.gatsbyjs.com/docs/how-to/local-development/graphql-typegen/",
-    color: "#8954A8",
-  }
-]
+  const setup = (p5: p5Types, canvasParentRef) => {
+    // use parent to render the canvas in this ref
+    // (without that p5 will render the canvas outside of your component)
+    p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
+    p5.background("rgba(0,255,0, 0.0)");
 
-const badgeStyle = {
-  color: "#fff",
-  backgroundColor: "#088413",
-  border: "1px solid #088413",
-  fontSize: 11,
-  fontWeight: "bold",
-  letterSpacing: 1,
-  borderRadius: 4,
-  padding: "4px 6px",
-  display: "inline-block",
-  position: "relative" as "relative",
-  top: -2,
-  marginLeft: 10,
-  lineHeight: 1,
-}
+    p5.pixelDensity(1);
 
-const links = [
-  {
-    text: "Tutorial",
-    url: "https://www.gatsbyjs.com/docs/tutorial/",
-    description:
-      "A great place to get started if you're new to web development. Designed to guide you through setting up your first Gatsby site.",
-    color: "#E95800",
-  },
-  {
-    text: "How to Guides",
-    url: "https://www.gatsbyjs.com/docs/how-to/",
-    description:
-      "Practical step-by-step guides to help you achieve a specific goal. Most useful when you're trying to get something done.",
-    color: "#1099A8",
-  },
-  {
-    text: "Reference Guides",
-    url: "https://www.gatsbyjs.com/docs/reference/",
-    description:
-      "Nitty-gritty technical descriptions of how Gatsby works. Most useful when you need detailed information about Gatsby's APIs.",
-    color: "#BC027F",
-  },
-  {
-    text: "Conceptual Guides",
-    url: "https://www.gatsbyjs.com/docs/conceptual/",
-    description:
-      "Big-picture explanations of higher-level Gatsby concepts. Most useful for building understanding of a particular topic.",
-    color: "#0D96F2",
-  },
-  {
-    text: "Plugin Library",
-    url: "https://www.gatsbyjs.com/plugins",
-    description:
-      "Add functionality and customize your Gatsby site or app with thousands of plugins built by our amazing developer community.",
-    color: "#8EB814",
-  },
-  {
-    text: "Build and Host",
-    url: "https://www.gatsbyjs.com/cloud",
-    badge: true,
-    description:
-      "Now you’re ready to show the world! Give your Gatsby site superpowers: Build and host on Gatsby Cloud. Get started for free!",
-    color: "#663399",
-  },
-]
+    marginX = p5.windowWidth - p5.int(p5.windowWidth / slotSize) * slotSize;
+    marginY = p5.windowHeight - p5.int(p5.windowHeight / slotSize) * slotSize;
+  };
 
-const IndexPage = () => {
+  const draw = (p5: p5Types) => {
+    // p5.ellipse(x, y, 70, 70);
+    // NOTE: Do not use setState in the draw function or in functions that are executed
+    // in the draw function...
+    // please use normal variables or class properties for these purposes
+    // x++;
+
+    for (
+      let i = marginX / 3 + slotSize / 3;
+      i < p5.width - marginX / 2;
+      i += slotSize
+    ) {
+      for (
+        let j = marginY / 2 + slotSize / 2;
+        j < p5.height - marginY / 2;
+        j += slotSize
+      ) {
+        let s = p5.map(
+          p5.dist(i, j, p5.mouseX, p5.mouseY),
+          0,
+          p5.sqrt(p5.width * p5.width + p5.height * p5.height),
+          slotSize,
+          1
+        );
+        p5.ellipse(i, j, s, s);
+      }
+    }
+  };
+
+  const mousePressed = (p5: p5Types) => {
+    slotSize = p5.random(10, 200);
+
+    marginX = p5.windowWidth - p5.int(p5.windowWidth / slotSize) * slotSize;
+    marginY = p5.windowHeight - p5.int(p5.windowHeight / slotSize) * slotSize;
+  };
+
+  const windowResized = (p5: p5Types) => {
+    p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
+    marginX = p5.windowWidth - p5.int(p5.windowWidth / slotSize) * slotSize;
+    marginY = p5.windowHeight - p5.int(p5.windowHeight / slotSize) * slotSize;
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const Sketch = Loadable(() => import("react-p5"));
+      setSketch(
+        <Sketch
+          setup={setup}
+          draw={draw}
+          // mousePressed={mousePressed}
+          windowResized={windowResized}
+        />
+      );
+    }
+
+    return () => {};
+  }, []);
+
   return (
-    <main style={pageStyles}>
-      <h1 style={headingStyles}>
-        Congratulations
-        <br />
-        <span style={headingAccentStyles}>— you just made a Gatsby site! 🎉🎉🎉</span>
-      </h1>
-      <p style={paragraphStyles}>
-        Edit <code style={codeStyles}>src/pages/index.tsx</code> to see this page
-        update in real-time. 😎
-      </p>
-      <ul style={doclistStyles}>
-        {docLinks.map(doc => (
-          <li key={doc.url} style={docLinkStyle}>
-            <a
-              style={linkStyle}
-              href={`${doc.url}?utm_source=starter&utm_medium=ts-docs&utm_campaign=minimal-starter-ts`}
-            >
-              {doc.text}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <ul style={listStyles}>
-        {links.map(link => (
-          <li key={link.url} style={{ ...listItemStyles, color: link.color }}>
-            <span>
-              <a
-                style={linkStyle}
-                href={`${link.url}?utm_source=starter&utm_medium=start-page&utm_campaign=minimal-starter-ts`}
-              >
-                {link.text}
-              </a>
-              {link.badge && (
-                <span style={badgeStyle} aria-label="New Badge">
-                  NEW!
-                </span>
-              )}
-              <p style={descriptionStyle}>{link.description}</p>
-            </span>
-          </li>
-        ))}
-      </ul>
-      <img
-        alt="Gatsby G Logo"
-        src="data:image/svg+xml,%3Csvg width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 2a10 10 0 110 20 10 10 0 010-20zm0 2c-3.73 0-6.86 2.55-7.75 6L14 19.75c3.45-.89 6-4.02 6-7.75h-5.25v1.5h3.45a6.37 6.37 0 01-3.89 4.44L6.06 9.69C7 7.31 9.3 5.63 12 5.63c2.13 0 4 1.04 5.18 2.65l1.23-1.06A7.959 7.959 0 0012 4zm-8 8a8 8 0 008 8c.04 0 .09 0-8-8z' fill='%23639'/%3E%3C/svg%3E"
-      />
-    </main>
-  )
+    <div className="text-white bg-black">
+      <div
+        className={cx("fixed left-0 top-0 w-screen h-screen", styles.sketch)}>
+        {sketch}
+      </div>
+
+      <main className={cx("h-screen w-screen", styles.gradientBg)}>
+        {/* <div className="border-b border-white opacity-40 fixed md:bottom-20 bottom-20 right-0 w-2/5"></div> */}
+        {/* <img
+          src="/d_d_agency_man_2.png"
+          className="fixed right-28 w-1/3 top-28"
+          alt="d_d agency interactor"
+        /> */}
+        <div className={cx("h-screen w-screen relative")}>
+          {
+            <div className="md:w-basic w-full flex justify-center">
+              <div className="flex flex-col w-screen m-10 md:m-28 md:text-lg ">
+                <div className="flex mr-20 mb-10 md:mr-0">
+                  <img
+                    src={"/logo.svg"}
+                    alt="Developer DAO agency logo"
+                    width={300}
+                    height={60}
+                  />
+                </div>
+
+                <Body
+                  headlineText="WHO WE ARE"
+                  bodyText={
+                    <>
+                      <p className="md:text-4xl text-2xl w-full font-semibold tracking-wider">
+                        We are a collective venture builder focused on investing
+                        our time into pushing forward web3 products and
+                        services.
+                      </p>
+                    </>
+                  }
+                  bottomText={
+                    <div className="flex flex-col md:flex-row w-full">
+                      <a
+                        className="flex"
+                        href="https://airtable.com/shrYeCK5aWiLcpQ9x">
+                        <button className="rounded-xl cursor-pointer transform transition border-2 border-white/20 px-6 py-3 mt-4 hover:bg-white hover backdrop-blur bg-white/5 hover:text-black tracking-wide font-bold">
+                          Work with us
+                        </button>
+                      </a>
+                      <p className="md:relative cursor-pointer fixed bottom-0 left-0 px-6 py-3 md:mt-4 m-4 md:ml-4 md:mb-0 tracking-wide group font-extralight hover:opacity-100 opacity-80">
+                        Find us{" "}
+                        <span className="ml-5 group-hover:opacity-100 transform transition  duration-200 opacity-0">
+                          ➡️ at{" "}
+                          <a href="https://www.developerdao.com/">
+                            <span className="hover:underline cursor-pointer">
+                              Developer DAO
+                            </span>
+                          </a>{" "}
+                          🦄
+                        </span>
+                      </p>
+                    </div>
+                  }
+                />
+              </div>
+            </div>
+          }
+        </div>
+      </main>
+    </div>
+  );
 }
 
-export default IndexPage
-
-export const Head: HeadFC = () => <title>Home Page</title>
+export const Head = () => <SEO />;
