@@ -172,12 +172,18 @@ export const Head = () => (
       name="description"
       content={`We are a collective venture builder focused on investing our time into pushing forward web3 products and services.`}
     />
-    <meta name="image" content={`/d_d_agency_social.png`} />
+    <meta
+      name="image"
+      content={`https://verdant-lokum-b64c67.netlify.app/d_d_agency_social.png`}
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={"D_D Agency"} />
     {/* <meta name="twitter:url" content={seo.url} /> */}
     {/* <meta name="twitter:description" content={seo.description} /> */}
-    <meta name="twitter:image" content={`/d_d_agency_social.png`} />
+    <meta
+      name="twitter:image"
+      content={`https://verdant-lokum-b64c67.netlify.app/d_d_agency_social.png`}
+    />
     {/* <meta name="twitter:creator" content={seo.twitterUsername} /> */}
     {/*     <link
       rel="icon"
