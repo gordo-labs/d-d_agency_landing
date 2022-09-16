@@ -136,7 +136,7 @@ export default function Index() {
                     <div className="flex flex-col md:flex-row w-full">
                       <a
                         className="flex"
-                        href="https://airtable.com/shrYeCK5aWiLcpQ9x">
+                        href="https://airtable.com/shrbSQGGElKBhfqlS">
                         <button className="rounded-xl cursor-pointer transform transition border-2 border-white/20 px-6 py-3 mt-4 hover:bg-white hover backdrop-blur bg-white/5 hover:text-black tracking-wide font-bold">
                           Work with us
                         </button>
@@ -174,20 +174,42 @@ export const Head = () => (
     />
     <meta
       name="image"
-      content={`https://verdant-lokum-b64c67.netlify.app/d_d_agency_social.png`}
+      content={`https://verdant-lokum-b64c67.netlify.app/d_d_agency_rrss.png`}
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={"D_D Agency"} />
-    {/* <meta name="twitter:url" content={seo.url} /> */}
-    {/* <meta name="twitter:description" content={seo.description} /> */}
+    <meta
+      name="twitter:url"
+      content={"https://verdant-lokum-b64c67.netlify.app"}
+    />
+    <meta
+      name="twitter:description"
+      content={
+        "We are a collective venture builder focused on investing our time into pushing forward web3 products and services."
+      }
+    />
     <meta
       name="twitter:image"
-      content={`https://verdant-lokum-b64c67.netlify.app/d_d_agency_social.png`}
+      content={`https://verdant-lokum-b64c67.netlify.app/d_d_agency_rrss.png`}
     />
-    {/* <meta name="twitter:creator" content={seo.twitterUsername} /> */}
+    <meta name="twitter:creator" content={"@gordo_desing"} />
     {/*     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>👤</text></svg>"
     /> */}
+
+    <meta
+      property="og:url"
+      content="https://verdant-lokum-b64c67.netlify.app/"
+    />
+    <meta property="og:title" content="D_D Agency" />
+    <meta
+      property="og:description"
+      content="We are a collective venture builder focused on investing our time into pushing forward web3 products and services."
+    />
+    <meta
+      property="og:image"
+      content="https://verdant-lokum-b64c67.netlify.app/d_d_agency_rrss.png"
+    />
   </>
 );
